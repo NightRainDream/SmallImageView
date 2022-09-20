@@ -83,3 +83,6 @@ public void setRadius(final float topLeft, final float topRight, final float bot
     this.mBottomRightRadius = bottomRight;
 }
 ```
+## 4.示例
+![示例图片](https://github.com/NightRainDream/SmallImageView/blob/master/example/%E7%A4%BA%E4%BE%8B%E5%9B%BE%E7%89%87.jpg)
+

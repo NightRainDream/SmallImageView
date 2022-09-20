@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SmallImageView">
+        <attr name="customRadius" format="dimension" />
+        <attr name="customRadiusTopLeft" format="dimension" />
+        <attr name="customRadiusTopRight" format="dimension" />
+        <attr name="customRadiusBottomLeft" format="dimension" />
+        <attr name="customRadiusBottomRight" format="dimension" />
+    </declare-styleable>
+</resources>

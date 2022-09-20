@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/NightRainDream/SmallImageView.svg)](https://jitpack.io/#NightRainDream/SmallImageView)
 # SmallImageView
 
 自由角度的ImageView，四个角都可定义不同的角度。
@@ -21,7 +22,7 @@ repositories {
 
 ```
 dependencies {
-	implementation 'com.github.NightRainDream:SmallImageView:Tag'
+	implementation 'com.github.NightRainDream:SmallImageView:1.0.0'
 }
 ```
 

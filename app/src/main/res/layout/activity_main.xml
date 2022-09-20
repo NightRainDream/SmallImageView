@@ -38,6 +38,10 @@
 
                 <com.night.image.SmallImageView
                     android:layout_width="100dp"
+                    app:customRadiusBottomLeft="10dp"
+                    app:customRadiusBottomRight="10dp"
+                    app:customRadiusTopRight="10dp"
+                    app:customRadiusTopLeft="10dp"
                     android:layout_height="100dp"
                     android:src="@drawable/test_square"
                     app:customRadius="10dp" />

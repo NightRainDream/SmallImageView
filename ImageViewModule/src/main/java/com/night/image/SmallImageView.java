@@ -23,7 +23,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 /**
  * -----------------------------------------------------
  * 任意圆角ImageView
- *
+ * <p>
  * 项目地址:https://github.com/NightRainDream/SmallImageView
  * -----------------------------------------------------
  */
@@ -117,7 +117,6 @@ public class SmallImageView extends AppCompatImageView {
     }
 
 
-
     /**
      * 设置圆角直径
      *
@@ -130,6 +129,11 @@ public class SmallImageView extends AppCompatImageView {
 
     /**
      * 设置圆角直径
+     *
+     * @param topLeft     左上角圆角直径
+     * @param topRight    右上角圆角直径
+     * @param bottomLeft  左下角圆角直径
+     * @param bottomRight 右下角圆角直径
      */
     public void setRadius(final float topLeft, final float topRight, final float bottomLeft, final float bottomRight) {
         Log.i(TAG, "setRadius==>topLeft" + topLeft + "||topRight" + topRight + "||bottomLeft" + bottomLeft + "||bottomRight" + bottomRight);

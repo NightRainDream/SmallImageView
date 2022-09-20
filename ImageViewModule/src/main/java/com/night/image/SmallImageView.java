@@ -20,6 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
 
+/**
+ * -----------------------------------------------------
+ * 任意圆角ImageView
+ *
+ * 项目地址:https://github.com/NightRainDream/SmallImageView
+ * -----------------------------------------------------
+ */
 public class SmallImageView extends AppCompatImageView {
     private static final String TAG = "SmallImageView";
     private final Paint mBitmapPaint = new Paint();

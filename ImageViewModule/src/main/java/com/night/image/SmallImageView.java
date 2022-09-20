@@ -52,11 +52,6 @@ public class SmallImageView extends AppCompatImageView {
     //全局圆角角度
     private float mRadius = 0F;
 
-    {
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setDither(true);
-        mBitmapPaint.setFilterBitmap(true);
-    }
 
     public SmallImageView(@NonNull Context context) {
         this(context, null);
@@ -71,6 +66,12 @@ public class SmallImageView extends AppCompatImageView {
         initAttrs(context, attrs);
     }
 
+    {
+        mBitmapPaint.setAntiAlias(true);
+        mBitmapPaint.setDither(true);
+        mBitmapPaint.setFilterBitmap(true);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -82,6 +83,8 @@ public class SmallImageView extends AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        Log.i("222222", "onDraw");
+
         //过滤角度值
         formatRadius();
         //不设置圆角的情况下直接走原生
@@ -96,7 +99,7 @@ public class SmallImageView extends AppCompatImageView {
             return;
         }
         //对Bitmap进行缩放处理
-        Bitmap bitmap = scaleBitmap(mSourceBitmap, displayWidth, displayHeight);
+        Bitmap drawBitmap = scaleBitmap(mSourceBitmap, displayWidth, displayHeight);
         int saved = canvas.saveLayer(mDisplayRect, mBitmapPaint);
         if (isRound()) {
             //普通圆角
@@ -111,7 +114,7 @@ public class SmallImageView extends AppCompatImageView {
         }
         mBitmapPaint.setXfermode(xfermode);
         // 绘制bitmap
-        canvas.drawBitmap(bitmap, getPaddingLeft(), getPaddingTop(), mBitmapPaint);
+        canvas.drawBitmap(drawBitmap, getPaddingLeft(), getPaddingTop(), mBitmapPaint);
         mBitmapPaint.setXfermode(null);
         canvas.restoreToCount(saved);
     }
@@ -143,6 +146,11 @@ public class SmallImageView extends AppCompatImageView {
         this.mBottomRightRadius = bottomRight;
     }
 
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        super.setImageDrawable(drawable);
+        Log.i("222222", "setImageDrawable");
+    }
 
     /**
      * 获取不规则弧度Path
@@ -209,6 +217,7 @@ public class SmallImageView extends AppCompatImageView {
      * @return 处理后的Bitmap
      */
     private Bitmap scaleBitmap(@NonNull Bitmap bitmap, int viewWidth, int viewHeight) {
+        Log.i("222222", "处理资源");
         int mBitmapWidth = bitmap.getWidth();
         int mBitmapHeight = bitmap.getHeight();
         if (mBitmapWidth == viewWidth && mBitmapHeight == viewHeight) {

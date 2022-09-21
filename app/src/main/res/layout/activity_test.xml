@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".TestActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.night.image.SmallImageView
+        android:id="@+id/iv_test_t"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal"
+        android:background="#DDDDDD"
+        android:src="@drawable/test_height" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <RadioGroup
+        android:id="@+id/rg_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <RadioButton
+            android:id="@+id/rb_padding_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="左边距" />
+
+        <RadioButton
+            android:id="@+id/rb_padding_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="上边距" />
+
+        <RadioButton
+            android:id="@+id/rb_padding_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="右边距" />
+
+        <RadioButton
+            android:id="@+id/rb_padding_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="下边距" />
+
+    </RadioGroup>
+
+
+    <RadioGroup
+        android:id="@+id/rg_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <RadioButton
+            android:id="@+id/rb_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="左上角" />
+
+        <RadioButton
+            android:id="@+id/rb_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="右上角" />
+
+        <RadioButton
+            android:id="@+id/rb_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="右下角" />
+
+        <RadioButton
+            android:id="@+id/rb_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="左下角" />
+
+    </RadioGroup>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

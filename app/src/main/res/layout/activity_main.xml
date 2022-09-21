@@ -38,13 +38,13 @@
 
                 <com.night.image.SmallImageView
                     android:layout_width="100dp"
-                    app:customRadiusBottomLeft="10dp"
-                    app:customRadiusBottomRight="10dp"
-                    app:customRadiusTopRight="10dp"
-                    app:customRadiusTopLeft="10dp"
                     android:layout_height="100dp"
                     android:src="@drawable/test_square"
-                    app:customRadius="10dp" />
+                    app:customRadius="10dp"
+                    app:customRadiusBottomLeft="10dp"
+                    app:customRadiusBottomRight="10dp"
+                    app:customRadiusTopLeft="10dp"
+                    app:customRadiusTopRight="10dp" />
 
                 <View
                     android:layout_width="0px"
@@ -214,7 +214,7 @@
                     android:id="@+id/iv_1"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/test_square"/>
+                    android:src="@drawable/test_square" />
 
                 <View
                     android:layout_width="0px"
@@ -236,7 +236,7 @@
                     android:id="@+id/iv_3"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/test_square"/>
+                    android:src="@drawable/test_square" />
 
                 <View
                     android:layout_width="0px"

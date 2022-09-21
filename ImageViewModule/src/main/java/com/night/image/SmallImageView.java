@@ -4,17 +4,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.graphics.Xfermode;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,12 +22,9 @@ import androidx.appcompat.widget.AppCompatImageView;
  * -----------------------------------------------------
  */
 public class SmallImageView extends AppCompatImageView {
-    private static final String TAG = "SmallImageView";
-    private final Paint mBitmapPaint = new Paint();
     private final Path mPath = new Path();
     private final RectF mDisplayRect = new RectF();
-    private final Matrix mMatrix = new Matrix();
-    private final Xfermode xfermode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
+    private BitmapShaderHelp mBitmapShaderHelp;
     //展示宽高
     private int displayWidth = 0;
     private int displayHeight = 0;
@@ -66,57 +57,44 @@ public class SmallImageView extends AppCompatImageView {
         initAttrs(context, attrs);
     }
 
-    {
-        mBitmapPaint.setAntiAlias(true);
-        mBitmapPaint.setDither(true);
-        mBitmapPaint.setFilterBitmap(true);
-    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.i(TAG, "onSizeChanged: ");
         displayWidth = w - getPaddingLeft() - getPaddingRight();
         displayHeight = h - getPaddingTop() - getPaddingBottom();
         mDisplayRect.set(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
+        HELP().onSizeChanged(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
+    }
+
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left, top, right, bottom);
+        displayWidth = getWidth() - getPaddingLeft() - getPaddingRight();
+        displayHeight = getHeight() - getPaddingTop() - getPaddingBottom();
+        mDisplayRect.set(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
+        HELP().onSizeChanged(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.i("222222", "onDraw");
-
         //过滤角度值
         formatRadius();
-        //不设置圆角的情况下直接走原生
         if (mTopLeftRadius == 0F && mTopRightRadius == 0F && mBottomLeftRadius == 0F && mBottomRightRadius == 0F) {
             super.onDraw(canvas);
             return;
         }
-        Bitmap mSourceBitmap = getBitmap();
-        //未正确获取到Bitmap情况下，走原生
-        if (mSourceBitmap == null) {
+        Paint mImagePaint = HELP().getDrawPaint();
+        if (mImagePaint == null) {
             super.onDraw(canvas);
             return;
         }
-        //对Bitmap进行缩放处理
-        Bitmap drawBitmap = scaleBitmap(mSourceBitmap, displayWidth, displayHeight);
-        int saved = canvas.saveLayer(mDisplayRect, mBitmapPaint);
         if (isRound()) {
-            //普通圆角
-            Log.i(TAG, "onDraw: 通过drawRoundRect()绘制");
-            canvas.drawRoundRect(mDisplayRect, mRadius, mRadius, mBitmapPaint);
+            canvas.drawRoundRect(mDisplayRect, mRadius, mRadius, mImagePaint);
         } else {
-            //部分圆角
-            Log.i(TAG, "onDraw: 通过drawPath()绘制");
-            //初始化绘制Path圆角矩形
             initRadiusRectF();
-            canvas.drawPath(getPath(), mBitmapPaint);
+            canvas.drawPath(getPath(), mImagePaint);
         }
-        mBitmapPaint.setXfermode(xfermode);
-        // 绘制bitmap
-        canvas.drawBitmap(drawBitmap, getPaddingLeft(), getPaddingTop(), mBitmapPaint);
-        mBitmapPaint.setXfermode(null);
-        canvas.restoreToCount(saved);
     }
 
 
@@ -126,8 +104,9 @@ public class SmallImageView extends AppCompatImageView {
      * @param radius 圆角直径
      */
     public void setRadius(final float radius) {
-        Log.i(TAG, "setRadius: " + radius);
+        LogUtils.i("设置圆角==>" + radius);
         this.mRadius = radius;
+        invalidate();
     }
 
     /**
@@ -139,17 +118,30 @@ public class SmallImageView extends AppCompatImageView {
      * @param bottomRight 右下角圆角直径
      */
     public void setRadius(final float topLeft, final float topRight, final float bottomLeft, final float bottomRight) {
-        Log.i(TAG, "setRadius==>topLeft" + topLeft + "||topRight" + topRight + "||bottomLeft" + bottomLeft + "||bottomRight" + bottomRight);
+        LogUtils.i("设置圆角==>topLeft" + topLeft + "||topRight" + topRight + "||bottomLeft" + bottomLeft + "||bottomRight" + bottomRight);
         this.mTopLeftRadius = topLeft;
         this.mTopRightRadius = topRight;
         this.mBottomLeftRadius = bottomLeft;
         this.mBottomRightRadius = bottomRight;
+        invalidate();
     }
 
     @Override
     public void setImageDrawable(@Nullable Drawable drawable) {
         super.setImageDrawable(drawable);
-        Log.i("222222", "setImageDrawable");
+        HELP().setImageBitmap(getDrawable());
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        super.setImageBitmap(bm);
+        HELP().setImageBitmap(getDrawable());
+    }
+
+    @Override
+    public void setImageResource(int resId) {
+        super.setImageResource(resId);
+        HELP().setImageBitmap(getDrawable());
     }
 
     /**
@@ -209,42 +201,6 @@ public class SmallImageView extends AppCompatImageView {
     }
 
     /**
-     * 对Bitmap进行缩放裁剪处理
-     *
-     * @param bitmap     Bitmap
-     * @param viewWidth  展示的宽
-     * @param viewHeight 展示的高
-     * @return 处理后的Bitmap
-     */
-    private Bitmap scaleBitmap(@NonNull Bitmap bitmap, int viewWidth, int viewHeight) {
-        Log.i("222222", "处理资源");
-        int mBitmapWidth = bitmap.getWidth();
-        int mBitmapHeight = bitmap.getHeight();
-        if (mBitmapWidth == viewWidth && mBitmapHeight == viewHeight) {
-            Log.i(TAG, "scaleBitmap: 使用原始Bitmap");
-            return bitmap;
-        }
-        float mScaleX = (float) viewWidth / mBitmapWidth;
-        float mScaleF = (float) viewHeight / mBitmapHeight;
-        float mScale = Math.max(mScaleX, mScaleF);
-        mMatrix.set(null);
-        mMatrix.setScale(mScale, mScale);
-        Bitmap scaleBitmap = Bitmap.createBitmap(bitmap, 0, 0, mBitmapWidth, mBitmapHeight, mMatrix, true);
-        int mScaleWidth = scaleBitmap.getWidth();
-        int mScaleHeight = scaleBitmap.getHeight();
-        if (mScaleWidth == viewWidth && mScaleHeight == viewHeight) {
-            Log.i(TAG, "scaleBitmap: 使用缩放后Bitmap");
-            return scaleBitmap;
-        }
-        int indexX = (mScaleWidth - viewWidth) / 2;
-        int indexY = (mScaleHeight - viewHeight) / 2;
-        Log.i(TAG, "scaleBitmap: 使用裁剪后Bitmap");
-        Bitmap cutBitmap = Bitmap.createBitmap(scaleBitmap, indexX, indexY, viewWidth, viewHeight);
-        scaleBitmap.recycle();
-        return cutBitmap;
-    }
-
-    /**
      * 初始化自定义属性
      *
      * @param context Context
@@ -266,7 +222,7 @@ public class SmallImageView extends AppCompatImageView {
         //右下角
         mBottomRightRadius = array.getDimension(R.styleable.SmallImageView_customRadiusBottomRight, mBottomRightRadius);
         array.recycle();
-        Log.i(TAG, "过滤前圆角直径==>mTopLeftRadius:" + mTopLeftRadius + "||mTopRightRadius:" + mTopRightRadius + "||mBottomRightRadius:" + mBottomRightRadius + "||mBottomLeftRadius:" + mBottomLeftRadius + "||mRadius:" + mRadius);
+        LogUtils.i("过滤前圆角直径==>mTopLeftRadius:" + mTopLeftRadius + "||mTopRightRadius:" + mTopRightRadius + "||mBottomRightRadius:" + mBottomRightRadius + "||mBottomLeftRadius:" + mBottomLeftRadius + "||mRadius:" + mRadius);
     }
 
 
@@ -303,7 +259,7 @@ public class SmallImageView extends AppCompatImageView {
                 mRadius = mTopLeftRadius;
             }
         }
-        Log.i(TAG, "过滤后圆角直径==>mTopLeftRadius:" + mTopLeftRadius + "||mTopRightRadius:" + mTopRightRadius + "||mBottomRightRadius:" + mBottomRightRadius + "||mBottomLeftRadius:" + mBottomLeftRadius + "||mRadius:" + mRadius);
+        LogUtils.i("过滤后圆角直径==>mTopLeftRadius:" + mTopLeftRadius + "||mTopRightRadius:" + mTopRightRadius + "||mBottomRightRadius:" + mBottomRightRadius + "||mBottomLeftRadius:" + mBottomLeftRadius + "||mRadius:" + mRadius);
     }
 
     /**
@@ -315,39 +271,35 @@ public class SmallImageView extends AppCompatImageView {
             if (mTopLeftRadius != 0) {
                 float rectTopLeft = mTopLeftRadius * 2;
                 mTopLeftRectF.set(getPaddingLeft(), getPaddingTop(), rectTopLeft + getPaddingLeft(), rectTopLeft + getPaddingTop());
+            } else {
+                mTopLeftRectF.setEmpty();
             }
             if (mTopRightRadius != 0) {
                 float rectTopRight = mTopRightRadius * 2;
                 mTopRightRectF.set(getPaddingLeft() + displayWidth - rectTopRight, getPaddingTop(), getPaddingLeft() + displayWidth, rectTopRight + getPaddingTop());
+            } else {
+                mTopRightRectF.setEmpty();
             }
             if (mBottomRightRadius != 0) {
                 float rectBottomRight = mBottomRightRadius * 2;
                 mBottomRightRectF.set(getPaddingLeft() + displayWidth - rectBottomRight, getPaddingTop() + displayHeight - rectBottomRight, getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
+            } else {
+                mBottomRightRectF.setEmpty();
             }
             if (mBottomLeftRadius != 0) {
                 float rectBottomLeft = mBottomLeftRadius * 2;
                 mBottomLeftRectF.set(getPaddingLeft(), getPaddingTop() + displayHeight - rectBottomLeft, getPaddingLeft() + rectBottomLeft, getPaddingTop() + displayHeight);
+            } else {
+                mBottomLeftRectF.setEmpty();
             }
         }
     }
 
-    @Nullable
-    private Bitmap getBitmap() {
-        Drawable drawable = getDrawable();
-        if (drawable instanceof BitmapDrawable) {
-            Log.i(TAG, "getBitmap: BitmapDrawable");
-            return ((BitmapDrawable) getDrawable()).getBitmap();
-        } else {
-            Log.i(TAG, "getBitmap: 其他类型的Drawable");
-            try {
-                Bitmap otherBitmap = Bitmap.createBitmap(displayWidth, displayHeight, Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(otherBitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-                drawable.draw(canvas);
-                return otherBitmap;
-            } catch (Exception e) {
-                return null;
-            }
+
+    private BitmapShaderHelp HELP() {
+        if (mBitmapShaderHelp == null) {
+            mBitmapShaderHelp = new BitmapShaderHelp();
         }
+        return mBitmapShaderHelp;
     }
 }

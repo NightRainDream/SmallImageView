@@ -22,7 +22,7 @@ repositories {
 
 ```
 dependencies {
-	implementation 'com.github.NightRainDream:SmallImageView:1.0.0'
+	implementation 'com.github.NightRainDream:SmallImageView:Latest_VERSION'
 }
 ```
 

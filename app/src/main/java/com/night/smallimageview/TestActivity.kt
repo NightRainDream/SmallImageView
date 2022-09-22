@@ -19,39 +19,44 @@ class TestActivity : AppCompatActivity() {
         iv_test_t = findViewById(R.id.iv_test_t)
         rg_test = findViewById(R.id.rg_test)
         rg_padding = findViewById(R.id.rg_padding)
+
+        iv_test_t.setImageResource(R.drawable.test_height)
+
+
         rg_test.setOnCheckedChangeListener { radioGroup, i ->
-            when(i){
-                R.id.rb_1 ->{
-                    iv_test_t.setRadius(dpToPx(15),0F,0F,0F)
+            when (i) {
+                R.id.rb_1 -> {
+                    iv_test_t.setRadius(dpToPx(15), 0F, 0F, 0F)
                 }
-                R.id.rb_2 ->{
-                    iv_test_t.setRadius(0F,dpToPx(15),0F,0F)
+                R.id.rb_2 -> {
+                    iv_test_t.setRadius(0F, dpToPx(15), 0F, 0F)
                 }
-                R.id.rb_3 ->{
-                    iv_test_t.setRadius(0F,0F,0F,dpToPx(15))
+                R.id.rb_3 -> {
+                    iv_test_t.setRadius(0F, 0F, 0F, dpToPx(15))
                 }
-                R.id.rb_4 ->{
-                    iv_test_t.setRadius(0F,0F,dpToPx(15),0F)
+                R.id.rb_4 -> {
+                    iv_test_t.setRadius(0F, 0F, dpToPx(15), 0F)
                 }
             }
         }
 
         rg_padding.setOnCheckedChangeListener { radioGroup, i ->
-            when(i){
-                R.id.rb_padding_1 ->{
-                    iv_test_t.setPadding(dpToPx(15).toInt(),0,0,0)
+            when (i) {
+                R.id.rb_padding_1 -> {
+                    iv_test_t.setPadding(dpToPx(15).toInt(), 0, 0, 0)
                 }
-                R.id.rb_padding_2 ->{
-                    iv_test_t.setPadding(0,dpToPx(15).toInt(),0,0)
+                R.id.rb_padding_2 -> {
+                    iv_test_t.setPadding(0, dpToPx(15).toInt(), 0, 0)
                 }
-                R.id.rb_padding_3 ->{
-                    iv_test_t.setPadding(0,0,0,dpToPx(15).toInt())
+                R.id.rb_padding_3 -> {
+                    iv_test_t.setPadding(0, 0, 0, dpToPx(15).toInt())
                 }
-                R.id.rb_padding_4 ->{
-                    iv_test_t.setPadding(0,0,dpToPx(15).toInt(),0)
+                R.id.rb_padding_4 -> {
+                    iv_test_t.setPadding(0, 0, dpToPx(15).toInt(), 0)
                 }
             }
         }
+
 
     }
 

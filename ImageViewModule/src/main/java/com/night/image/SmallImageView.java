@@ -63,8 +63,8 @@ public class SmallImageView extends AppCompatImageView {
         super.onSizeChanged(w, h, oldw, oldh);
         displayWidth = w - getPaddingLeft() - getPaddingRight();
         displayHeight = h - getPaddingTop() - getPaddingBottom();
-        mDisplayRect.set(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
-        HELP().onSizeChanged(getPaddingLeft(), getPaddingTop(), getPaddingLeft() + displayWidth, getPaddingTop() + displayHeight);
+        mDisplayRect.set(getPaddingLeft(), getPaddingTop(), w - getPaddingRight(), h - getPaddingBottom());
+        HELP().onSizeChanged(getPaddingLeft(), getPaddingTop(), w - getPaddingRight(), h - getPaddingBottom());
     }
 
     @Override
@@ -105,6 +105,9 @@ public class SmallImageView extends AppCompatImageView {
      */
     public void setRadius(final float radius) {
         LogUtils.i("设置圆角==>" + radius);
+        if (radius == mRadius) {
+            return;
+        }
         this.mRadius = radius;
         invalidate();
     }
@@ -119,6 +122,10 @@ public class SmallImageView extends AppCompatImageView {
      */
     public void setRadius(final float topLeft, final float topRight, final float bottomLeft, final float bottomRight) {
         LogUtils.i("设置圆角==>topLeft" + topLeft + "||topRight" + topRight + "||bottomLeft" + bottomLeft + "||bottomRight" + bottomRight);
+        if (topLeft == mTopLeftRadius && topRight == mTopRightRadius && bottomLeft == mBottomLeftRadius && bottomRight == mBottomRightRadius) {
+            return;
+        }
+        this.mRadius = 0;
         this.mTopLeftRadius = topLeft;
         this.mTopRightRadius = topRight;
         this.mBottomLeftRadius = bottomLeft;
@@ -296,6 +303,11 @@ public class SmallImageView extends AppCompatImageView {
     }
 
 
+    /**
+     * Help对象
+     *
+     * @return BitmapShaderHelp
+     */
     private BitmapShaderHelp HELP() {
         if (mBitmapShaderHelp == null) {
             mBitmapShaderHelp = new BitmapShaderHelp();

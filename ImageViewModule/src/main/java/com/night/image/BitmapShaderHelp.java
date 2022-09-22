@@ -34,8 +34,10 @@ class BitmapShaderHelp {
 
     public void onSizeChanged(int left, int top, int right, int bottom) {
         LogUtils.i("展示区域发生变化");
+        mDisplayRect.setEmpty();
         mDisplayRect.set(left, top, right, bottom);
         mBitmapShader = null;
+        mBitmapPaint.setShader(null);
     }
 
     /**
@@ -48,6 +50,7 @@ class BitmapShaderHelp {
             return;
         }
         mBitmapShader = null;
+        mBitmapPaint.setShader(null);
         if (drawable instanceof BitmapDrawable) {
             this.mBitmap = ((BitmapDrawable) drawable).getBitmap();
         } else {
@@ -78,19 +81,27 @@ class BitmapShaderHelp {
         if (mBitmap == null) {
             return;
         }
+        //资源尺寸
         int bitmapHeight = mBitmap.getHeight();
         int bitmapWidth = mBitmap.getWidth();
+        //展示区域尺寸
         float viewWidth = mDisplayRect.width();
         float viewHeight = mDisplayRect.height();
-        LogUtils.i("View尺寸==>宽:"+viewWidth+"||高:"+viewHeight);
-        LogUtils.i("Bitmap尺寸==>宽:"+bitmapWidth+"||高:"+bitmapHeight);
-        float mScaleX = viewWidth / bitmapWidth;
-        float mScaleF = viewHeight / bitmapHeight;
-        float mScale = Math.max(mScaleX, mScaleF);
-        LogUtils.i("最大缩放比==>"+mScale);
+        float scale;
+        float x = bitmapWidth - viewWidth;
+        float y = bitmapHeight - viewHeight;
+        if (x < y) {
+            //宽度
+            scale = viewWidth / bitmapWidth;
+        } else {
+            //高度
+            scale = viewHeight / bitmapHeight;
+        }
+        float dx = (viewWidth - bitmapWidth*scale ) / 2F;
+        float dy = (viewHeight -bitmapHeight*scale) / 2F;
         mMatrix.set(null);
-        mMatrix.setScale(mScale, mScale);
-        mMatrix.postTranslate((viewWidth - bitmapWidth * mScale) / 2F,(viewHeight - bitmapHeight * mScale) / 2F);
+        mMatrix.setScale(scale, scale);
+        mMatrix.postTranslate(mDisplayRect.left+dx, mDisplayRect.top+dy);
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mBitmapShader.setLocalMatrix(mMatrix);
         mBitmapPaint.setShader(mBitmapShader);

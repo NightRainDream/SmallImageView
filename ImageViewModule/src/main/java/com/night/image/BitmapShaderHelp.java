@@ -88,14 +88,10 @@ class BitmapShaderHelp {
         float viewWidth = mDisplayRect.width();
         float viewHeight = mDisplayRect.height();
         float scale;
-        float x = bitmapWidth - viewWidth;
-        float y = bitmapHeight - viewHeight;
-        if (x < y) {
-            //宽度
-            scale = viewWidth / bitmapWidth;
+        if (bitmapWidth * viewHeight > viewWidth * bitmapHeight) {
+            scale = viewHeight / (float) bitmapHeight;
         } else {
-            //高度
-            scale = viewHeight / bitmapHeight;
+            scale = viewWidth / (float) bitmapWidth;
         }
         float dx = (viewWidth - bitmapWidth*scale ) / 2F;
         float dy = (viewHeight -bitmapHeight*scale) / 2F;

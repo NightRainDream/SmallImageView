@@ -19,7 +19,6 @@ class TestActivity : AppCompatActivity() {
         rg_test = findViewById(R.id.rg_test)
         rg_padding = findViewById(R.id.rg_padding)
 
-        iv_test_t.setImageResource(R.drawable.test_height)
 
 
         rg_test.setOnCheckedChangeListener { radioGroup, i ->

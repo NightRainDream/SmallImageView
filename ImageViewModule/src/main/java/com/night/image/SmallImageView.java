@@ -237,18 +237,16 @@ public class SmallImageView extends AppCompatImageView {
      * 过滤圆弧直接
      */
     private void formatRadius() {
-        int minDisplaySize = Math.min(displayWidth, displayHeight);
-        //全局直径优先
+        int minDisplaySize = Math.min(displayWidth, displayHeight) / 2;
         if (mRadius > 0) {
             if (mRadius > minDisplaySize) {
                 mRadius = minDisplaySize;
             }
             mTopLeftRadius = mRadius;
             mTopRightRadius = mRadius;
-            mBottomLeftRadius = mRadius;
             mBottomRightRadius = mRadius;
+            mBottomLeftRadius = mRadius;
         } else {
-            //防止设置圆弧直径过大
             if (mTopLeftRadius > minDisplaySize) {
                 mTopLeftRadius = minDisplaySize;
             }
@@ -261,7 +259,6 @@ public class SmallImageView extends AppCompatImageView {
             if (mBottomLeftRadius > minDisplaySize) {
                 mBottomLeftRadius = minDisplaySize;
             }
-            //如果四个角相等，相当于设置了全局的角度
             if (mTopLeftRadius == mTopRightRadius && mTopRightRadius == mBottomRightRadius && mBottomRightRadius == mBottomLeftRadius) {
                 mRadius = mTopLeftRadius;
             }

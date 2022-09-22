@@ -13,11 +13,13 @@
         android:layout_weight="1" />
 
     <com.night.image.SmallImageView
-        app:customRadius="100dp"
+        android:background="#DDDDDD"
         android:id="@+id/iv_test_t"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        app:customRadiusBottomRight="100dp"
+        app:customRadiusTopLeft="100dp" />
 
     <View
         android:layout_width="match_parent"

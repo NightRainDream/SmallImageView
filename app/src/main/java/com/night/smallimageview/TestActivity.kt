@@ -12,7 +12,6 @@ class TestActivity : AppCompatActivity() {
     private lateinit var iv_test_t: SmallImageView
     private lateinit var rg_test: RadioGroup
     private lateinit var rg_padding: RadioGroup
-    private val mHandler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)

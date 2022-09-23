@@ -32,12 +32,29 @@ class BitmapShaderHelp {
     }
 
 
+    /**
+     * 展示区域发生变化
+     *
+     * @param left   左侧
+     * @param top    顶部
+     * @param right  右侧
+     * @param bottom 底部
+     */
     public void onSizeChanged(int left, int top, int right, int bottom) {
         LogUtils.i("展示区域发生变化");
         mDisplayRect.setEmpty();
         mDisplayRect.set(left, top, right, bottom);
         mBitmapShader = null;
         mBitmapPaint.setShader(null);
+    }
+
+    /**
+     * 设置透明度
+     *
+     * @param alpha 0-255
+     */
+    public void setAlpha(int alpha) {
+        mBitmapPaint.setAlpha(alpha);
     }
 
     /**
@@ -77,6 +94,9 @@ class BitmapShaderHelp {
         return mBitmapPaint;
     }
 
+    /**
+     * 初始化BitmapShader
+     */
     private void initBitmapShader() {
         if (mBitmap == null) {
             return;
@@ -93,11 +113,11 @@ class BitmapShaderHelp {
         } else {
             scale = viewWidth / (float) bitmapWidth;
         }
-        float dx = (viewWidth - bitmapWidth*scale ) / 2F;
-        float dy = (viewHeight -bitmapHeight*scale) / 2F;
+        float dx = (viewWidth - bitmapWidth * scale) / 2F;
+        float dy = (viewHeight - bitmapHeight * scale) / 2F;
         mMatrix.set(null);
         mMatrix.setScale(scale, scale);
-        mMatrix.postTranslate(mDisplayRect.left+dx, mDisplayRect.top+dy);
+        mMatrix.postTranslate(mDisplayRect.left + dx, mDisplayRect.top + dy);
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         mBitmapShader.setLocalMatrix(mMatrix);
         mBitmapPaint.setShader(mBitmapShader);

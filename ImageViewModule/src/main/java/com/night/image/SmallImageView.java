@@ -151,6 +151,12 @@ public class SmallImageView extends AppCompatImageView {
         HELP().setImageBitmap(getDrawable());
     }
 
+    @Override
+    public void setAlpha(float alpha) {
+        super.setAlpha(alpha);
+        HELP().setAlpha((int) alpha);
+    }
+
     /**
      * 获取不规则弧度Path
      *

@@ -57,11 +57,7 @@ dependencies {
  *
  * @param radius 圆角直径
  */
-public void setRadius(final float radius) {
-    Log.i(TAG, "setRadius: " + radius);
-    this.mRadius = radius;
-}
-
+public void setRadius(final float radius)
 ```
 
 #### 3.2.2 设置圆角直径(分别设置四个角)
@@ -75,13 +71,7 @@ public void setRadius(final float radius) {
  * @param bottomLeft  左下角圆角直径
  * @param bottomRight 右下角圆角直径
  */
-public void setRadius(final float topLeft, final float topRight, final float bottomLeft, final float bottomRight) {
-    Log.i(TAG, "setRadius==>topLeft" + topLeft + "||topRight" + topRight + "||bottomLeft" + bottomLeft + "||bottomRight" + bottomRight);
-    this.mTopLeftRadius = topLeft;
-    this.mTopRightRadius = topRight;
-    this.mBottomLeftRadius = bottomLeft;
-    this.mBottomRightRadius = bottomRight;
-}
+public void setRadius(final float topLeft, final float topRight, final float bottomLeft, final float bottomRight)
 ```
 ## 4.示例
 ![示例图片](https://github.com/NightRainDream/SmallImageView/blob/master/example/%E7%A4%BA%E4%BE%8B%E5%9B%BE%E7%89%87.jpg)

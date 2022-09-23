@@ -134,6 +134,12 @@ public class SmallImageView extends AppCompatImageView {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mBitmapShaderHelp = null;
+    }
+
+    @Override
     public void setImageDrawable(@Nullable Drawable drawable) {
         super.setImageDrawable(drawable);
         HELP().setImageBitmap(getDrawable());

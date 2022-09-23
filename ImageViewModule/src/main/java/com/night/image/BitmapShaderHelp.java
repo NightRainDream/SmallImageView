@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -23,6 +24,8 @@ class BitmapShaderHelp {
     private Bitmap mBitmap;
     //BitmapShader
     private BitmapShader mBitmapShader = null;
+    //是否重置资源
+    private boolean isResetRes = false;
 
 
     public BitmapShaderHelp() {
@@ -64,8 +67,12 @@ class BitmapShaderHelp {
      */
     public void setImageBitmap(@Nullable Drawable drawable) {
         if (drawable == null) {
+            //重置资源
+            isResetRes = true;
             return;
         }
+        //处理资源
+        isResetRes = false;
         mBitmapShader = null;
         mBitmapPaint.setShader(null);
         if (drawable instanceof BitmapDrawable) {
@@ -85,6 +92,9 @@ class BitmapShaderHelp {
 
     @Nullable
     public Paint getDrawPaint() {
+        if (isResetRes) {
+            return null;
+        }
         if (mBitmap == null) {
             return null;
         }
@@ -98,6 +108,9 @@ class BitmapShaderHelp {
      * 初始化BitmapShader
      */
     private void initBitmapShader() {
+        if (isResetRes) {
+            return;
+        }
         if (mBitmap == null) {
             return;
         }

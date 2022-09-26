@@ -84,14 +84,18 @@ class BitmapShaderHelp {
                 int drawableWidth = drawable.getIntrinsicWidth();
                 int drawableHeight = drawable.getIntrinsicHeight();
                 // 获取drawable的颜色格式
-                Bitmap.Config mDrawableConfig = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888: Bitmap.Config.RGB_565;
+                Bitmap.Config mDrawableConfig = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
                 Bitmap otherBitmap = Bitmap.createBitmap(drawableWidth, drawableHeight, mDrawableConfig);
                 Canvas canvas = new Canvas(otherBitmap);
-                drawable.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
                 drawable.draw(canvas);
                 this.mBitmap = otherBitmap;
             } catch (Exception e) {
-                LogUtils.e("获取Bitmap错误==>" + e.getMessage());
+                Bitmap errorBitmap = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(errorBitmap);
+                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.draw(canvas);
+                this.mBitmap = errorBitmap;
             }
         }
     }

@@ -5,6 +5,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -79,9 +80,14 @@ class BitmapShaderHelp {
             this.mBitmap = ((BitmapDrawable) drawable).getBitmap();
         } else {
             try {
-                Bitmap otherBitmap = Bitmap.createBitmap(2, 2, Bitmap.Config.ARGB_8888);
+                // 获取 drawable 长宽
+                int drawableWidth = drawable.getIntrinsicWidth();
+                int drawableHeight = drawable.getIntrinsicHeight();
+                // 获取drawable的颜色格式
+                Bitmap.Config mDrawableConfig = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888: Bitmap.Config.RGB_565;
+                Bitmap otherBitmap = Bitmap.createBitmap(drawableWidth, drawableHeight, mDrawableConfig);
                 Canvas canvas = new Canvas(otherBitmap);
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                drawable.setBounds(0,0,canvas.getWidth(),canvas.getHeight());
                 drawable.draw(canvas);
                 this.mBitmap = otherBitmap;
             } catch (Exception e) {

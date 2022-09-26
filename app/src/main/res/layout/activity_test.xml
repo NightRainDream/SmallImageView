@@ -18,9 +18,9 @@
         android:id="@+id/iv_test_t"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/test_width"
-        android:layout_gravity="center_horizontal"
-        app:customRadius="200dp"/>
+        app:customRadius="100dp"
+        android:src="@drawable/icon_default_head"
+        android:layout_gravity="center_horizontal"/>
 
 
 

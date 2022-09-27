@@ -6,5 +6,6 @@
         <attr name="customRadiusTopRight" format="dimension" />
         <attr name="customRadiusBottomLeft" format="dimension" />
         <attr name="customRadiusBottomRight" format="dimension" />
+        <attr name="customSquare" format="boolean" />
     </declare-styleable>
 </resources>

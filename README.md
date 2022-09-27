@@ -39,13 +39,14 @@ dependencies {
 
 ### 3.1 属性
 
-| 属性                    | 说明                       | 默认值 |
-| ----------------------- | -------------------------- | ------ |
-| customRadiusTopLeft     | 左上角圆角直径             | 0F     |
-| customRadiusTopRight    | 右上角圆角直径             | 0F     |
-| customRadiusBottomRight | 右下角圆角直径             | 0F     |
-| customRadiusBottomLeft  | 左下角圆角直径             | 0F     |
-| customRadius            | 四个角圆角直径(优先级最高) | 0F     |
+| 属性                    | 说明             | 默认值   |
+| ----------------------- |----------------|-------|
+| customRadiusTopLeft     | 左上角圆角直径        | 0F    |
+| customRadiusTopRight    | 右上角圆角直径        | 0F    |
+| customRadiusBottomRight | 右下角圆角直径        | 0F    |
+| customRadiusBottomLeft  | 左下角圆角直径        | 0F    |
+| customRadius            | 四个角圆角直径(优先级最高) | 0F    |
+| customSquare            | 是否强制View高和宽相等  | false |
 
 ### 3.2 方法
 

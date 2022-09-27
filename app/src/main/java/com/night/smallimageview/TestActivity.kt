@@ -4,65 +4,48 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.util.TypedValue
 import android.widget.RadioGroup
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.appcompat.widget.AppCompatSeekBar
 import com.night.image.SmallImageView
 
 class TestActivity : AppCompatActivity() {
     private lateinit var iv_test_t: SmallImageView
-    private lateinit var rg_test: RadioGroup
-    private lateinit var rg_padding: RadioGroup
+    private lateinit var seek_bar: AppCompatSeekBar
+
+    //    private lateinit var rg_test: RadioGroup
+//    private lateinit var rg_padding: RadioGroup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)
         iv_test_t = findViewById(R.id.iv_test_t)
-        rg_test = findViewById(R.id.rg_test)
-        rg_padding = findViewById(R.id.rg_padding)
+        seek_bar = findViewById(R.id.seek_bar)
 
-
-
-        rg_test.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.rb_1 -> {
-                    iv_test_t.setRadius(dpToPx(15), 0F, 0F, 0F)
-                }
-                R.id.rb_2 -> {
-                    iv_test_t.setRadius(0F, dpToPx(15), 0F, 0F)
-                }
-                R.id.rb_3 -> {
-                    iv_test_t.setRadius(0F, 0F, 0F, dpToPx(15))
-                }
-                R.id.rb_4 -> {
-                    iv_test_t.setRadius(0F, 0F, dpToPx(15), 0F)
-                }
+        seek_bar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+               if(p2){
+                   iv_test_t.setRadius(dpToPx(100 * (p1/100F)))
+               }
             }
-        }
 
-        rg_padding.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.rb_padding_1 -> {
-                    iv_test_t.setPadding(dpToPx(15).toInt(), 0, 0, 0)
-                }
-                R.id.rb_padding_2 -> {
-                    iv_test_t.setPadding(0, dpToPx(15).toInt(), 0, 0)
-                }
-                R.id.rb_padding_3 -> {
-                    iv_test_t.setPadding(0, 0, 0, dpToPx(15).toInt())
-                }
-                R.id.rb_padding_4 -> {
-                    iv_test_t.setPadding(0, 0, dpToPx(15).toInt(), 0)
-                }
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+
             }
-        }
 
+            override fun onStopTrackingTouch(p0: SeekBar?) {
 
+            }
+        })
     }
 
 
-    private fun dpToPx(dp: Int): Float {
+    private fun dpToPx(dp: Float): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
+            dp,
             resources.displayMetrics
         )
     }

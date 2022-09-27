@@ -42,6 +42,8 @@ public class SmallImageView extends AppCompatImageView {
     private final RectF mBottomRightRectF = new RectF();
     //全局圆角角度
     private float mRadius = 0F;
+    //是否强制正方形View
+    private boolean isSquare = false;
 
 
     public SmallImageView(@NonNull Context context) {
@@ -57,6 +59,14 @@ public class SmallImageView extends AppCompatImageView {
         initAttrs(context, attrs);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if(isSquare){
+            super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        }else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -131,12 +141,6 @@ public class SmallImageView extends AppCompatImageView {
         this.mBottomLeftRadius = bottomLeft;
         this.mBottomRightRadius = bottomRight;
         invalidate();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mBitmapShaderHelp = null;
     }
 
     @Override
@@ -240,6 +244,8 @@ public class SmallImageView extends AppCompatImageView {
         mBottomLeftRadius = array.getDimension(R.styleable.SmallImageView_customRadiusBottomLeft, mBottomLeftRadius);
         //右下角
         mBottomRightRadius = array.getDimension(R.styleable.SmallImageView_customRadiusBottomRight, mBottomRightRadius);
+        //是否强制正方形View
+        isSquare = array.getBoolean(R.styleable.SmallImageView_customSquare,isSquare);
         array.recycle();
         LogUtils.i("过滤前圆角直径==>mTopLeftRadius:" + mTopLeftRadius + "||mTopRightRadius:" + mTopRightRadius + "||mBottomRightRadius:" + mBottomRightRadius + "||mBottomLeftRadius:" + mBottomLeftRadius + "||mRadius:" + mRadius);
     }
